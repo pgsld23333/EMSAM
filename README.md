@@ -91,8 +91,8 @@ The training info and the evalution results will be auto saved in `EvoSAM/work_d
 
 2. We extend our sincere thanks to the [SAML](https://github.com/liuquande/SAML) team for making the Multi-site Dataset for Prostate MRI Segmentation publicly available. 
 
-3. We express our gratitude to the  [MedSAM](https://github.com/bowang-lab/MedSAM) team for publicly releasing the source code and model.
+3. We express our gratitude to the [MedSAM](https://github.com/bowang-lab/MedSAM) team for publicly releasing the source code and model.
 
-4. We also thank Meta AI for publicly releasing the source code and model of [Segment Anything](https://github.com/facebookresearch/segment-anything).
+4. We also thank Meta AI for publicly releasing the source code and model of [SAM](https://github.com/facebookresearch/segment-anything).
 
 
