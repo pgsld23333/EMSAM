@@ -1,13 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-task 0:
-    LoRA tuning the image encoder and mask decoder    
-    freeze prompt image encoder
 
-task 1+: 
-    LoRA tuning the mask decoder
-    freeze image encoder and prompt image encoder
-"""
 
 # %% setup environment
 import numpy as np
@@ -74,22 +66,21 @@ parser.add_argument(
     "-i",
     "--tr_npy_path",
     type=str,
-    default="data/voc_vessel",
+    default="data/json_files",
     help="path to training npy files; two subfolders: gts and imgs",
 )
-parser.add_argument("-task_name", type=str, default="SAM-ViT-B-seqv3-moe-linreg-new")
+parser.add_argument("-task_name", type=str, default="EvoSAM")
 # parser.add_argument("-task_name", type=str, default="debug")
 parser.add_argument("-model_type", type=str, default="vit_b")
 parser.add_argument(
-    "-checkpoint", type=str, default="work_dir/MedSAM/sam_vit_b_01ec64.pth"
+    "-checkpoint", type=str, default="work_dir/checkpoints/sam_vit_b_01ec64.pth"
 )
 # parser.add_argument('-device', type=str, default='cuda:0')
 parser.add_argument(
     "--load_pretrain", type=bool, default=True, help="use wandb to monitor training"
 )
 parser.add_argument("-pretrain_model_path", type=str, default="")
-# parser.add_argument("-work_dir", type=str, default="./work_dir/v4_experiments")
-parser.add_argument("-work_dir", type=str, default="./work_dir/debug")
+parser.add_argument("-work_dir", type=str, default="./work_dir/experiments")
 # train
 parser.add_argument("-num_epochs", type=int, default=50)
 parser.add_argument("-batch_size", type=int, default=2)
@@ -108,9 +99,11 @@ parser.add_argument(
 )
 parser.add_argument("--device", type=str, default="cuda:2")
 parser.add_argument("--order", type=int, default=0)
-parser.add_argument("--task-num", type=int, default=5)
+# parser.add_argument("--task-num", type=int, default=5)
 
 parser.add_argument("--ridge", type=float, default=1.0)
+
+parser.add_argument("--dataset", type=str, default="vessel_3task", choices=["vessel_3task", "vessel_5task", "prostate"])
 
 ######################### LoRA config ##########################
 # iencoder_use_lora=False,
@@ -131,6 +124,15 @@ parser.add_argument('--decoder_enable_lora', nargs='+', type=bool, default=[True
 ################################################################
 
 args = parser.parse_args()
+if args.dataset == "vessel_3task":
+    from datasets.vessel_9cls_3task_datasets_with_bbox_with_dataaug import VesselSeqDatasetWithLabel, VesselTestDataset, VesselSeqDatasetInference
+    args.task_num = 3
+elif args.dataset == "vessel_5task":
+    from datasets.vessel_9cls_5task_datasets_with_bbox_with_dataaug import VesselSeqDatasetWithLabel, VesselTestDataset, VesselSeqDatasetInference
+    args.task_num = 5
+elif args.dataset == "prostate":
+    from datasets.prostate_6task_datasets_with_bbox_with_dataaug import VesselSeqDatasetWithLabel, VesselTestDataset, VesselSeqDatasetInference
+    args.task_num = 6
 
 ######################### LoRA config ##########################
 args.iencoder_lora_config = {
@@ -153,13 +155,8 @@ run_id = datetime.now().strftime("%Y%m%d-%H%M")
 model_save_path = join(args.work_dir, args.task_name + "-" + run_id)
 device = torch.device(args.device)
 
-if args.task_num == 3:
-    raise NotImplementedError
-    # from datasets.vessel_9cls_3task_datasets_with_bbox_with_dataaug import VesselSeqDatasetWithLabel, VesselTestDataset, VesselSeqDatasetInference
-elif args.task_num == 5:
-    from datasets.vessel_9cls_3task_datasets_with_bbox_with_dataaug_new import VesselSeqDatasetWithLabel, VesselTestDataset, VesselSeqDatasetInference
-else:
-    raise NotImplementedError
+
+
 
 class MedSAM(nn.Module):
     def __init__(
@@ -365,7 +362,7 @@ def main():
         str(sum(p.numel() for p in img_mask_encdec_params if p.requires_grad)),
     )  # 93729252
     
-    # eval_all_task(args, medsam_model, None, -1, logger, order=args.order)
+    eval_all_task(args, medsam_model, None, -1, logger, order=args.order)
     for task in range(args.task_num):
         logger.info(f"=> Start Training task {task}.")
 
