@@ -1,15 +1,15 @@
-# EvoSAM
+# EMSAM
 
-**This is the official repository for EvoSAM: Dynamically evolving segment anything model with continuous learning for medical image segmentation.**
+**This is the official repository for EMSAM: Continual Learning on Segment Anything Model for Expanding Medical Image Segmentation.**
 
 <img title="" src="assets/pipeline.png" alt="" style="zoom:25%;" data-align="center">
 
 # Installation
 
-1. Create a virtual environment `conda create -n evosam python=3.10 -y` and activate it `conda activate evosam`
+1. Create a virtual environment `conda create -n EMSAM python=3.10 -y` and activate it `conda activate EMSAM`
 2. Install pytorch 2.0.0
-3. git clone https://github.com/pgsld23333/EvoSAM.git
-4. Enter the EvoSAM folder `cd EvoSAM` and run `pip install -r requirements.txt`
+3. git clone https://github.com/pgsld23333/EMSAM.git
+4. Enter the EMSAM folder `cd EMSAM` and run `pip install -r requirements.txt`
    
    
 
@@ -27,19 +27,19 @@
 
 ## 2. Organize data
 
-（1）move all json files in `EvoSAM/data/json_files`
+（1）move all json files in `EMSAM/data/json_files`
 
-（2）move blood vessel dataset in `EvoSAM/data` and `tar -xvf vessel_images.tar`
+（2）move blood vessel dataset in `EMSAM/data` and `tar -xvf vessel_images.tar`
 
-（3）move prostate vessel dataset in `EvoSAM/data` and `tar -xvf prostate_images.tar`
+（3）move prostate vessel dataset in `EMSAM/data` and `tar -xvf prostate_images.tar`
 
 
 
 # Model Preparation
 
-1. Download [SAM checkpoint](https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth) and place it at `EvoSAM/work_dir/checkpoints/sam_vit_b_01ec64.pth`
+1. Download [SAM checkpoint](https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth) and place it at `EMSAM/work_dir/checkpoints/sam_vit_b_01ec64.pth`
 
-2. Download the [MedSAM checkpoint](https://drive.google.com/drive/folders/1ETWmi4AiniJeWOt6HAsYgTjYv_fkgzoN?usp=drive_link) and place it at `EvoSAM/work_dir/checkpoints/medsam_vit_b.pth`
+2. Download the [MedSAM checkpoint](https://drive.google.com/drive/folders/1ETWmi4AiniJeWOt6HAsYgTjYv_fkgzoN?usp=drive_link) and place it at `EMSAM/work_dir/checkpoints/medsam_vit_b.pth`
    
    
 
@@ -55,10 +55,10 @@
 
 
 
-## 1. EvoSAM
+## 1. EMSAM
 
 ```bash
-python train_evosam.py --dataset {continual_dataset} --order {task_order_id} --checkpoint {model_checkpoint}
+python train_EMSAM.py --dataset {continual_dataset} --order {task_order_id} --checkpoint {model_checkpoint}
 ```
 
 
@@ -81,7 +81,7 @@ python baseline_methods/train_sam_er.py --dataset {continual_dataset} --order {t
 
 
 
-The training info and the evalution results will be auto saved in `EvoSAM/work_dir/experiments`.
+The training info and the evalution results will be auto saved in `EMSAM/work_dir/experiments`.
 
 
 
