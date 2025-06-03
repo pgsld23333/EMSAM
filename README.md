@@ -4,6 +4,9 @@
 
 <img title="" src="assets/pipeline.png" alt="" style="zoom:25%;" data-align="center">
 
+# Supplementary Material
+Supplementary material can be found in [assets/supplementary material.pdf](assets/supplementary material.pdf)
+
 # Installation
 
 1. Create a virtual environment `conda create -n EMSAM python=3.10 -y` and activate it `conda activate EMSAM`
