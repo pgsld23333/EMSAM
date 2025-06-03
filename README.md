@@ -5,7 +5,7 @@
 <img title="" src="assets/pipeline.png" alt="" style="zoom:25%;" data-align="center">
 
 # Supplementary Material
-Supplementary material can be found in [assets/supplementary material.pdf](assets/supplementary material.pdf)
+Supplementary material can be found in [assets/supplementary_material.pdf](assets/supplementary_material.pdf)
 
 # Installation
 
